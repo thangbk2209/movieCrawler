@@ -28,7 +28,11 @@ class BrickSetSpider(scrapy.Spider):
     def parse(self, response):
         countryInfo=response.css('a.country::text').extract()
         title = response.css('a.title-1::text').extract()
-        year = response.xpath('//*[@class="movie-meta-info"]/dl/dd[4]/a/text()').extract_first()
+        year4 = response.xpath('//*[@class="movie-meta-info"]/dl/dd[4]/a/text()').extract_first()
+        linkWatch = 'phimmoi.net/' +  response.xpath('//*[@id="btn-film-watch"]/@href').extract_first()
+        imdb = response.css('dd.imdb::text').extract_first()
+        year6 = response.xpath('//*[@class="movie-meta-info"]/dl/dd[6]/a/text()').extract_first()
+        year5 = response.xpath('//*[@class="movie-meta-info"]/dl/dd[5]/a/text()').extract_first()
         # for i in range(27):
         #     linkXPath = '//*[@class="movie-list-index"]/ul/li[' + str(i+2) + "]/a"
         # year = response.xpath('/html/body/div[3]/div[6]/div[1]/div[1]/div[1]/div[1]/div/div[1]/div[1]/div[1]/dl/dd[4]/a').extract_first()
@@ -36,31 +40,86 @@ class BrickSetSpider(scrapy.Spider):
         #     print 'self_title'
         #     for i in range(len(movieTitles)):
         # print 'title i ', title
-        if(len(year)==4):
-            yield{
-                'title': title[0],
-                'country':countryInfo[0],
-                'year':year,
-                'imdb': 'null'
-            }
+        if(year4 is None):       
+            if(year6 is None):    
+                yield{
+                    'title': title[0],
+                    'country':countryInfo[0],
+                    'year':year5,
+                    'imdb': imdb,
+                    'linkWatch': linkWatch
+                }
+            elif(len(year6)==4):
+                yield{
+                    'title': title[0],
+                    'country':countryInfo[0],
+                    'year':year6,
+                    'imdb': imdb,
+                    'linkWatch': linkWatch
+                }
         else:
-            year = response.xpath('//*[@class="movie-meta-info"]/dl/dd[6]/a/text()').extract_first()
-            imdb = response.css('dd.imdb::text').extract()
-            if(year != null):
-                yield{
-                    'title': title[0],
-                    'country':countryInfo[0],
-                    'year':year,
-                    'imdb': imdb
-                }
+            if(len(year4)!=4):
+                if(year6 is None):    
+                    yield{
+                        'title': title[0],
+                        'country':countryInfo[0],
+                        'year':year5,
+                        'imdb': imdb,
+                        'linkWatch': linkWatch
+                    }
+                else:
+                    if(len(year6)==4):
+                        yield{
+                            'title': title[0],
+                            'country':countryInfo[0],
+                            'year':year6,
+                            'imdb': imdb,
+                            'linkWatch': linkWatch
+                        }
+                    else:
+                        yield{
+                        'title': title[0],
+                        'country':countryInfo[0],
+                        'year':year5,
+                        'imdb': imdb,
+                        'linkWatch': linkWatch
+                    }
             else:
-                year = response.xpath('//*[@class="movie-meta-info"]/dl/dd[5]/a/text()').extract_first()
                 yield{
                     'title': title[0],
                     'country':countryInfo[0],
-                    'year':year,
-                    'imdb': imdb
+                    'year':year4,
+                    'imdb': imdb,
+                    'linkWatch': linkWatch
                 }
+        # if(len(year)==4):
+        #     yield{
+        #         'title': title[0],
+        #         'country':countryInfo[0],
+        #         'year':year,
+        #         'imdb': imdb,
+        #         'linkWatch': linkWatch
+        #     }
+        # else:
+        #     year = response.xpath('//*[@class="movie-meta-info"]/dl/dd[6]/a/text()').extract_first()
+            
+        #     if(year != null):
+        #         yield{
+        #             'title': title[0],
+        #             'country':countryInfo[0],
+        #             'year':year,
+        #             'imdb': imdb,
+        #             'linkWatch': linkWatch
+        #         }
+        #     else:
+        #         year = response.xpath('//*[@class="movie-meta-info"]/dl/dd[5]/a/text()').extract_first()
+        #         yield{
+        #             'title': title[0],
+        #             'country':countryInfo[0],
+        #             'year':year,
+        #             'imdb': imdb,
+        #             'linkWatch': linkWatch
+        #         }
         # print 'questions'
         # print questions
         # filename = 'check.txt'
