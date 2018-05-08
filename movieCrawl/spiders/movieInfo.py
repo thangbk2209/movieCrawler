@@ -31,8 +31,11 @@ class BrickSetSpider(scrapy.Spider):
         year4 = response.xpath('//*[@class="movie-meta-info"]/dl/dd[4]/a/text()').extract_first()
         linkWatch = 'phimmoi.net/' +  response.xpath('//*[@id="btn-film-watch"]/@href').extract_first()
         imdb = response.css('dd.imdb::text').extract_first()
+        content = response.xpath('//*[@id="film-content"]/p/text()').extract_first()
+        
         year6 = response.xpath('//*[@class="movie-meta-info"]/dl/dd[6]/a/text()').extract_first()
         year5 = response.xpath('//*[@class="movie-meta-info"]/dl/dd[5]/a/text()').extract_first()
+        
         # for i in range(27):
         #     linkXPath = '//*[@class="movie-list-index"]/ul/li[' + str(i+2) + "]/a"
         # year = response.xpath('/html/body/div[3]/div[6]/div[1]/div[1]/div[1]/div[1]/div/div[1]/div[1]/div[1]/dl/dd[4]/a').extract_first()
@@ -47,6 +50,7 @@ class BrickSetSpider(scrapy.Spider):
                     'country':countryInfo[0],
                     'year':year5,
                     'imdb': imdb,
+                    'content': content,
                     'linkWatch': linkWatch
                 }
             elif(len(year6)==4):
@@ -55,6 +59,7 @@ class BrickSetSpider(scrapy.Spider):
                     'country':countryInfo[0],
                     'year':year6,
                     'imdb': imdb,
+                    'content': content,
                     'linkWatch': linkWatch
                 }
         else:
@@ -65,6 +70,7 @@ class BrickSetSpider(scrapy.Spider):
                         'country':countryInfo[0],
                         'year':year5,
                         'imdb': imdb,
+                        'content': content,
                         'linkWatch': linkWatch
                     }
                 else:
@@ -74,6 +80,7 @@ class BrickSetSpider(scrapy.Spider):
                             'country':countryInfo[0],
                             'year':year6,
                             'imdb': imdb,
+                            'content': content,
                             'linkWatch': linkWatch
                         }
                     else:
@@ -82,6 +89,7 @@ class BrickSetSpider(scrapy.Spider):
                         'country':countryInfo[0],
                         'year':year5,
                         'imdb': imdb,
+                        'content': content,
                         'linkWatch': linkWatch
                     }
             else:
@@ -90,6 +98,7 @@ class BrickSetSpider(scrapy.Spider):
                     'country':countryInfo[0],
                     'year':year4,
                     'imdb': imdb,
+                    'content': content,
                     'linkWatch': linkWatch
                 }
         # if(len(year)==4):

@@ -3,13 +3,18 @@ from scrapy.selector import Selector
 from scrapy.contrib.spiders import CrawlSpider, Rule
 from scrapy.contrib.linkextractors import LinkExtractor
 from bs4 import BeautifulSoup
-start_url = 'http://www.phimmoi.net/the-loai/phim-co-trang/'
-
-
+typeMovies = ["phim-co-trang/", 'phim-hai/','phim-tam-ly/','phim-tinh-cam-lang-man/',
+                'phim-tai-lieu/','phim-vien-tuong/','phim-phieu-luu/','phim-kinh-di/','phim-hanh-dong/']
+start_urls=[]
+for movie in typeMovies:
+    urli = 'http://www.phimmoi.net/the-loai/'+ movie
+    start_urls.append(urli)
 class BrickSetSpider(scrapy.Spider):
     name = "spider"
     def start_requests(self):
-        yield scrapy.Request(url = start_url, callback = self.parse)
+        for url in start_urls: 
+            print 'loli',url
+            yield scrapy.Request(url = url, callback = self.parse)
     def parse(self, response):
         linkMovies = []
         linkBackgrounds = []
@@ -28,6 +33,7 @@ class BrickSetSpider(scrapy.Spider):
         if (movieTitles):
             for i in range(len(movieTitles)):
                 yield{
+                    'category': movie ,
                     'linkMovie':'http://www.phimmoi.net/'+ linkMovies[i],
                     'linkBackground':linkBackgrounds[i].split(')')[0].split('(')[1],
                     'title':movieTitles[i],

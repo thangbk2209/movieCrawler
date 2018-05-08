@@ -6,7 +6,7 @@ sys.setdefaultencoding('utf8')
 data = []
 
 file_name1 = 'data/data.json'
-file_name2 = 'movieInfo.json'
+file_name2 = 'data/movieInfo1.json'
 with open(file_name1) as f:
     movie = json.load(f)
 with open(file_name2) as f:
@@ -20,12 +20,14 @@ for i in range(len(movie['movie'])):
         if(movie['movie'][i]['title'] == movieInfo[j]['title']):
             print 'movie ', i, '=== movieInfo ', j
             print type(movie['movie'][i]['title'])
+            print type(movieInfo[j]['content'])
             print movieInfo[j]['title']
             data.append({
                 'category': movie['movie'][i]['category'],
                 'linkPhim':movie['movie'][i]['linkPhim'],
                 'linkBackgrounds': movie['movie'][i]['linkBackgrounds'],
-                'title':movie['movie'][i]['title'].encode('utf8', 'ignore'),
+                'title':movieInfo[j]['title'],
+                'content': str(movieInfo[j]['content']).encode('utf-8'),
                 'engTitle': movie['movie'][i]['engTitle'],
                 'linkWatch': movieInfo[j]['linkWatch'],
                 'country': movieInfo[j]['country'],
